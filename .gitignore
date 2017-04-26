@@ -1,2 +1,5 @@
 /CoreWithIdentityServerFour.Mvc/bin/
 /CoreWithIdentityServerFour.Mvc/obj/
+
+/CoreWithIdentityServerFour.ServerWebApi/bin/
+/CoreWithIdentityServerFour.ServerWebApi/obj/

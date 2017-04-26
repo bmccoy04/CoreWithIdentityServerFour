@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CoreWithIdentityServerFour.Mvc
+namespace CoreWithIdentityServerFour.ServerWebApi
 {
     public class Startup
     {
@@ -27,6 +27,10 @@ namespace CoreWithIdentityServerFour.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddIdentityServer()
+            .AddTemporarySigningCredential();
+
             // Add framework services.
             services.AddMvc();
         }
@@ -37,25 +41,8 @@ namespace CoreWithIdentityServerFour.Mvc
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles();
-
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseIdentityServer();
+            app.UseMvc();
         }
     }
 }
