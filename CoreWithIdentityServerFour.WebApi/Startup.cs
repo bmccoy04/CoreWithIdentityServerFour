@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using IdentityServer4.AccessTokenValidation;
 
 namespace CoreWithIdentityServerFour.WebApi
 {
@@ -37,6 +38,12 @@ namespace CoreWithIdentityServerFour.WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions{
+                Authority = "http://localhost:5050",
+                RequireHttpsMetadata = false,
+                ApiName = "api1"
+            });
 
             app.UseMvc();
         }

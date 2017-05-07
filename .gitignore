@@ -3,3 +3,10 @@
 
 /CoreWithIdentityServerFour.ServerWebApi/bin/
 /CoreWithIdentityServerFour.ServerWebApi/obj/
+
+/CoreWithIdentityServerFour.WebApi/bin/
+/CoreWithIdentityServerFour.WebApi/obj/
+
+
+/CoreWithIdentityServerFour.Console/bin/
+/CoreWithIdentityServerFour.Console/obj/
