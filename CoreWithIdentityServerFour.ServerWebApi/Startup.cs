@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using IdentityServer4.Models;
+using IdentityServer4;
 
 namespace CoreWithIdentityServerFour.ServerWebApi
 {
@@ -31,6 +32,7 @@ namespace CoreWithIdentityServerFour.ServerWebApi
 
             services.AddIdentityServer()
             .AddTemporarySigningCredential()
+            .AddInMemoryIdentityResources(Config.GetIdentityResources())
             .AddInMemoryApiResources(Config.GetApiResources())
             .AddInMemoryClients(Config.GetClients());
 
@@ -76,6 +78,14 @@ namespace CoreWithIdentityServerFour.ServerWebApi
             };
         }
 
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+            };
+        }
         public static IEnumerable<IdentityServer4.Models.Client> GetClients(){
             var client = new IdentityServer4.Models.Client();
             client.ClientId = "client";
@@ -87,8 +97,28 @@ namespace CoreWithIdentityServerFour.ServerWebApi
                 "api1"
             };
 
+            var client2 = new Client
+            {
+                ClientId = "mvc",
+                ClientName = "MVC Client",
+                AllowedGrantTypes = GrantTypes.Implicit,
+
+                // where to redirect to after login
+                RedirectUris = { "http://localhost:5002/signin-oidc" },
+
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
+                AllowedScopes = new List<string>
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                }
+            };
+
             return new List<IdentityServer4.Models.Client>(){
-                client
+                client,
+                client2
             };
         }
     }
